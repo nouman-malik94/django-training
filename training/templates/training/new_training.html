@@ -1,0 +1,35 @@
+{% extends 'training/base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+  <div class="container">
+    <div class="card my-4">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-11">
+            <h1 class="card-title">New Training</h1>
+          </div>
+          <div class="col-1 text-end">
+            <a href="{% url 'home'%}" class="btn-close btn"></a>
+
+          </div>
+
+        </div>
+        <form method="post" class="row g-3">
+          {% csrf_token %}
+          {% for field in form %}
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field|add_class:"form-control" }}
+              </div>
+            </div>
+          {% endfor %}
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">Create Training</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

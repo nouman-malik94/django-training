@@ -1,0 +1,36 @@
+{% extends 'training/base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="container">
+    <div class="card my-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-11">
+                    <span class="h1 card-title">Edit Training</span>
+                </div>
+                <div class="col-1 text-end">
+                    <a class="btn-close btn" href="{% url 'home'%}"></a>
+                </div>
+            </div>
+            <form class="row g-3" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field|add_class:"form-control" }}
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="col-12">
+                    <button class="btn btn-primary" type="submit">Save Changes</button>
+                    <a class="btn btn-danger float-end" href="{% url 'delete_training' training.pk %}"
+                       onclick="return confirm('Are you sure you want to delete this training?')">Delete</a>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

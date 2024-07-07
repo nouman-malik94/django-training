@@ -1,0 +1,254 @@
+{% extends 'adminlte/base.html' %}
+
+{% block content %}
+<form enctype="multipart/form-data" class="container" method="post" id="product_form">
+    {% csrf_token %}
+    <!-- main form start --- in our case product form -->
+    <div class="card">
+        <div class="card-header card-header-secondary">
+            <h4 class="card-title">Training</h4>
+        </div>
+            <div class="form-group card-body">
+                <div class="row g-3"  >
+                    {% for field in form %}
+                        <div class="col-6">
+                            <label>{{field.label}}</label>
+                            {% if field.field.required %}
+                                <span style="color: red;" class="required">*</span>
+                            {% endif %}
+
+                            {{field}}
+                            {% if field.help_text %}
+                                <small style="color: grey">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <p style="color: red">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+    </div>
+    <!-- main form end --- in our case training form -->
+
+    <!-- inline form for training_file start -->
+    {% with named_formsets.training_files as formset %}
+        {{ formset.management_form }}
+        <script type="text/html" id="training_files-template">
+            <tr id="training_files-__prefix__" class= hide_all>
+                {% for fields in formset.empty_form.hidden_fields %}
+                    {{ fields }}
+                {% endfor %}
+
+                {% for fields in formset.empty_form.visible_fields %}
+                    <td>{{fields}}</td>
+                {% endfor %}
+            </tr>
+        </script>
+        <div class="table-responsive card mt-4">
+            <div class="card-header card-header-secondary">
+                <h4 class="card-title">Add File</h4>
+            </div>
+            <table class="table card-header">
+                <thead class="text-secondary">
+                <tr>
+                    <th>Description <span style="color: red;" class="required">*</span></th>
+                    <th>File <span style="color: red;" class="required">*</span></th>
+                    <th>Delete?</th>
+                </tr>
+                </thead>
+                <tbody id="item-training_files">
+                    {% for error in formset.non_form_errors %}
+                        <span style="color: red">{{ error }}</span>
+                    {% endfor %}
+                    {% for formss in formset %}
+                        {{ formss.management_form }}
+                        <tr id="training_files-{{ forloop.counter0 }}" class= hide_all>
+                            {{ formss.id }}
+                            {% for field in formss.visible_fields %}
+                                <td>
+                                    {{field}}
+                                    {% for error in field.errors %}
+                                        <span style="color: red">{{ error }}</span>
+                                    {% endfor %}
+
+                                    {% comment %} {{ field.DELETE }} {% endcomment %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="#" id="add-training_files-button" class="btn btn-secondary add-training_files">Add More</a> <!-- id="add-inlineformsetname-button" -->
+        </div>
+
+        {% endwith %}
+        <!-- inline form for resource_person end -->
+
+
+    <!-- inline form for resource_person start -->
+    {% with named_formsets.resource_persons as formset %}
+        {{ formset.management_form }}
+        <script type="text/html" id="resource_persons-template">
+            <tr id="resource_persons-__prefix__" class= hide_all>
+                {% for fields in formset.empty_form.hidden_fields %}
+                    {{ fields }}
+                {% endfor %}
+
+                {% for fields in formset.empty_form.visible_fields %}
+                    <td>{{fields}}</td>
+                {% endfor %}
+            </tr>
+        </script>
+        <div class="table-responsive card mt-4">
+            <div class="card-header card-header-secondary">
+                <h4 class="card-title">Add Resource Person</h4>
+            </div>
+            <table class="table card-header">
+                <thead class="text-secondary">
+                <tr>
+                    <th>Name <span style="color: red;" class="required">*</span></th>
+                    <th>DoB <span style="color: red;" class="required">*</span></th>
+                    <th>PIN <span style="color: red;" class="required">*</span></th>
+                    <th>Delete?</th>
+                </tr>
+                </thead>
+                <tbody id="item-resource_persons">
+                    {% for error in formset.non_form_errors %}
+                        <span style="color: red">{{ error }}</span>
+                    {% endfor %}
+                    {% for formss in formset %}
+                        {{ formss.management_form }}
+                        <tr id="resource_persons-{{ forloop.counter0 }}" class= hide_all>
+                            {{ formss.id }}
+                            {% for field in formss.visible_fields %}
+                                <td>
+                                    {{field}}
+                                    {% for error in field.errors %}
+                                        <span style="color: red">{{ error }}</span>
+                                    {% endfor %}
+
+                                    {% comment %} {{ field.DELETE }} {% endcomment %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="#" id="add-resource_person-button" class="btn btn-secondary add-resource_persons">Add More</a> <!-- id="add-inlineformsetname-button" -->
+        </div>
+
+        {% endwith %}
+        <!-- inline form for resource_person end -->
+
+    <!-- inline form for resource_item start -->
+
+    <!-- EXPLAINING with named_formsets.resource_items as formset -->
+    <!-- Note: named_formsets is used in get_context_data function in views.py -->
+    <!-- Note: here resource_items is our resource_itemFormSet name, used in get_named_formsets function in views.py -->
+    {% with named_formsets.resource_items as formset %}
+        {{ formset.management_form }}
+        <script type="text/html" id="resource_items-template">  // id="inlineformsetname-template"
+            // id='inlineformsetname-__prefix__'
+            <tr id="resource_items-__prefix__" class= hide_all>
+                {% for fields in formset.empty_form.hidden_fields %}
+                    {{ fields }}
+                {% endfor %}
+
+                {% for fields in formset.empty_form.visible_fields %}
+                    <td>{{fields}}</td>
+                {% endfor %}
+            </tr>
+        </script>
+        <div class="table-responsive card mt-4">
+            <div class="card-header card-header-secondary">
+                <h4 class="card-title">Add Resource Item</h4>
+            </div>
+            <table class="table card-header">
+                <thead class="text-secondary">
+                <tr>
+                    <th>Name <span style="color: red;" class="required">*</span></th>
+                    <th>Quantity <span style="color: red;" class="required">*</span></th>
+                    <th>Price <span style="color: red;" class="required">*</span></th>
+                    <th>Delete?</th>
+                </tr>
+                </thead>
+                <tbody id="item-resource_items">
+                    {% for error in formset.non_form_errors %}
+                        <span style="color: red">{{ error }}</span>
+                    {% endfor %}
+                    {% for formss in formset %}
+                        {{ formss.management_form }}
+                        <tr id="resource_items-{{ forloop.counter0 }}" class= hide_all>
+                            {{ formss.id }}
+                            {% for field in formss.visible_fields %}
+                                <td>
+                                    {{field}}
+                                    {% for error in field.errors %}
+                                        <span style="color: red">{{ error }}</span>
+                                    {% endfor %}
+
+                                    {% comment %} {{ field.DELETE }} {% endcomment %}
+                                </td>
+                            {% endfor %}
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="#" id="add-resource_item-button" class="btn btn-secondary add-resource_items">Add More</a> <!-- id="add-inlineformsetname-button" -->
+        </div>
+
+        {% endwith %}
+        <!-- inline form for resource_item end -->
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-secondary btn-block">Submit</button>
+        </div>
+</form>
+
+<script>
+    $(document).ready(function() {
+        // when user clicks add more btn of files
+      $('.add-training_files').click(function(ev) {
+          ev.preventDefault();
+          var count = $('#item-training_files').children().length;
+          var tmplMarkup = $('#training_files-template').html();
+          var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+          $('#item-training_files').append(compiledTmpl);
+
+          // update form count
+          $('#id_training_files-TOTAL_FORMS').attr('value', count+1);
+      });
+  });
+
+    $(document).ready(function() {
+        // when user clicks add more btn of resource person
+      $('.add-resource_persons').click(function(ev) {
+          ev.preventDefault();
+          var count = $('#item-resource_persons').children().length;
+          var tmplMarkup = $('#resource_persons-template').html();
+          var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+          $('#item-resource_persons').append(compiledTmpl);
+
+          // update form count
+          $('#id_resource_persons-TOTAL_FORMS').attr('value', count+1);
+      });
+  });
+
+  $(document).ready(function() {
+    // when user clicks add more btn of resource_items
+      $('.add-resource_items').click(function(ev) {
+          ev.preventDefault();
+          var count = $('#item-resource_items').children().length;
+          var tmplMarkup = $('#resource_items-template').html();
+          var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+          $('#item-resource_items').append(compiledTmpl);
+
+          // update form count
+          $('#id_resource_items-TOTAL_FORMS').attr('value', count+1);
+      });
+  });
+</script>
+
+{% endblock content %}

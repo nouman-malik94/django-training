@@ -1,0 +1,24 @@
+<div class="input-group">
+<!--  <input type="{{ widget.type }}" class="form-control" placeholder="Choose File" aria-describedby="basic-addon2">-->
+    {% if widget.is_initial %}
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="inputGroupFile02" name="{{ widget.name }}" >
+        <label class="custom-file-label" for="inputGroupFile02">{{ widget.value|truncatechars:50 }}</label>
+
+      </div>
+
+        <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon2">
+            <a href="{{ widget.value.url }}" target="_blank"><i class="fa fa-download" aria-hidden="true"></i></a>
+            </span>
+        </div>
+    {% else %}
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="inputGroupFile03" name="{{ widget.name }}" >
+        <label class="custom-file-label" for="inputGroupFile03">Choose File</label>
+    </div>
+
+    {% endif %}
+
+</div>
+
